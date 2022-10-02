@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " P ",
+    "PKP",
+    " P "
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:ender_eye"
+    },
+    "K": {
+      "item": "windextra:nil_key"
+    }
+  },
+  "result": {
+    "item": "windextra:nil_pearl"
+  }
+}

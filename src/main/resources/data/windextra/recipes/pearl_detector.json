@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GCG",
+    "OPC",
+    "GCG"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:end_crystal"
+    },
+    "C": {
+      "item": "minecraft:glass"
+    },
+    "O": {
+      "item": "minecraft:observer"
+    },
+    "P": {
+      "item": "windextra:nil_pearl"
+    }
+  },
+  "result": {
+    "item": "windextra:pearl_detector"
+  }
+}

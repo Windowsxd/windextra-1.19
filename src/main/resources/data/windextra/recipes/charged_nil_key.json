@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "N  ",
+    " KE",
+    " EO"
+  ],
+  "key": {
+    "E": {
+      "item": "minecraft:end_crystal"
+    },
+    "K": {
+      "item": "windextra:nil_key"
+    },
+    "N": {
+      "item": "minecraft:nether_star"
+    },
+    "O": {
+      "item": "windextra:nil_pearl"
+    }
+  },
+  "result": {
+    "item": "windextra:charged_nil_key"
+  }
+}

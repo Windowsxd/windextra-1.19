@@ -1,0 +1,18 @@
+{
+  "type": "windextra:personal_dim",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "windextra:nil_biome",
+      "lakes": false,
+      "features": false,
+      "layers": [
+        {
+          "block": "minecraft:air",
+          "height": 1
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

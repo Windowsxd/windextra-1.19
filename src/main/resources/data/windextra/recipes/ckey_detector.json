@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GCG",
+    "OKC",
+    "GCG"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:end_crystal"
+    },
+    "C": {
+      "item": "minecraft:glass"
+    },
+    "O": {
+      "item": "minecraft:observer"
+    },
+    "K": {
+      "item": "windextra:nil_key"
+    }
+  },
+  "result": {
+    "item": "windextra:ckey_detector"
+  }
+}
