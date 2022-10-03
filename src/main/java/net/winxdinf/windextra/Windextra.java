@@ -25,6 +25,6 @@ public class Windextra implements ModInitializer {
 		ModDimensions.register();
 		ModBiomes.initBiomes();
 		ModBiomes.registerBiomes();
-		LOGGER.info("Hello Fabric world!");
+		LOGGER.info("Windextras initialized");
 	}
 }
