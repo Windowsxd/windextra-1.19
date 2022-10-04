@@ -3,9 +3,12 @@ package net.winxdinf.windextra.item.advanced;
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
@@ -76,17 +79,24 @@ public class NilPearlItem extends Item {
                             world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.NEUTRAL, 0.5f, 1f / (entity.world.getRandom().nextFloat() * 0.4f + 0.8f));
                             PearlData.putInt("NilPearlUsage", 0);
                             Entity tpedTarget = FabricDimensions.teleport(Target, (ServerWorld) world, new TeleportTarget(entity.getEyePos(), new Vec3d(0, 0, 0), 0f, 0f));
-                            float pitch = entity.getPitch();
-                            float yaw = entity.getYaw();
-                            float roll = 0.0f;
-                            float speed = 1.5f;
-                            float divergence = .0f;
-                            float f = -MathHelper.sin(yaw * ((float) Math.PI / 180)) * MathHelper.cos(pitch * ((float) Math.PI / 180));
-                            float g = -MathHelper.sin((pitch + roll) * ((float) Math.PI / 180));
-                            float h = MathHelper.cos(yaw * ((float) Math.PI / 180)) * MathHelper.cos(pitch * ((float) Math.PI / 180));
-                            setVelocity(tpedTarget, f, g, h, speed, divergence);
-                            Vec3d vec3d = entity.getVelocity();
-                            tpedTarget.setVelocity(tpedTarget.getVelocity().add(vec3d.x, entity.isOnGround() ? 0.0 : vec3d.y, vec3d.z));
+                            if (ProjectileEntity.class.isAssignableFrom(Target.getClass())) {
+                                ((ProjectileEntity)tpedTarget).setVelocity(entity, entity.getPitch(), entity.getYaw(), 0.0f, 1.5f, 1.0f);
+                            } else {
+                                if (ItemEntity.class.isAssignableFrom(Target.getClass())) {
+                                    ((ItemEntity)Target).setToDefaultPickupDelay();
+                                }
+                                float pitch = entity.getPitch();
+                                float yaw = entity.getYaw();
+                                float roll = 0.0f;
+                                float speed = 1.5f;
+                                float divergence = .0f;
+                                float f = -MathHelper.sin(yaw * ((float) Math.PI / 180)) * MathHelper.cos(pitch * ((float) Math.PI / 180));
+                                float g = -MathHelper.sin((pitch + roll) * ((float) Math.PI / 180));
+                                float h = MathHelper.cos(yaw * ((float) Math.PI / 180)) * MathHelper.cos(pitch * ((float) Math.PI / 180));
+                                setVelocity(tpedTarget, f, g, h, speed, divergence);
+                                Vec3d vec3d = entity.getVelocity();
+                                tpedTarget.setVelocity(tpedTarget.getVelocity().add(vec3d.x, entity.isOnGround() ? 0.0 : vec3d.y, vec3d.z));
+                            }
                         } else {
                             PearlData.putInt("NilPearlUsage", NilPearlUsage - 1);
                         }
@@ -199,7 +209,7 @@ ItemStack itemStack = user.getStackInHand(hand);
                     IEntityDataSaver NilPearlUser = (IEntityDataSaver) user;
                     NbtCompound PearlData = NilPearlUser.getPersistentData();
                     PearlData.putInt("NilPearlPos", FLineUUIDWasFound);
-                    PearlData.putInt("NilPearlUsage", 6);
+                    PearlData.putInt("NilPearlUsage", 10);
                 }
             });
             world.getProfiler().pop();

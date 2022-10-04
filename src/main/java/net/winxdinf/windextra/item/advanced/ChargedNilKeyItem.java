@@ -312,7 +312,7 @@ public class ChargedNilKeyItem extends Item {
                         CKeyData.putDouble("CKeyY", hitResult.getPos().y);
                         CKeyData.putDouble("CKeyZ", hitResult.getPos().z);
 
-                        CKeyData.putInt("CKeyUsage", 6);
+                        CKeyData.putInt("CKeyUsage", 10);
                         //user.sendMessage(Text.of(Target.getName().getString()));
                     } else {
                         FabricDimensions.teleport(user, value, new TeleportTarget(new Vec3d(Nx, Ny, Nz), new Vec3d(0, 0, 0), 0f, 0f));
