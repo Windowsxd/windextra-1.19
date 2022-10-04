@@ -2,6 +2,9 @@
   "item.windextra.nil_key": "Nil Key",
   "item.windextra.charged_nil_key": "Charged Nil Key",
   "item.windextra.nil_pearl": "Nil Pearl",
+  "item.windextra.ckey_tag": "Charged Nil Key Tag",
+  "item.windextra.pearl_tag": "Nil Pearl Tag",
+
 
   "block.windextra.nil_block": "Nil Block",
   "block.windextra.ckey_detector": "Charged Nil Key Detector",
