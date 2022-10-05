@@ -14,3 +14,7 @@ Nil Pearl: Lets you throw a random entity in your personal dimension like a snow
 Pearl Detector: Works only in your personal dimension. It emits a redstone pulse when you use a Nil Pearl.
 
 Charged Nil Key Detector: Works only in your personal dimension. It emits a redstone pulse when you use a Charged Nil Key to pull out an entity.
+
+Charged Nil Key Tag: Prevents mobs from being pulled out of your personal dimension with the Charged Nil Key.
+
+Nil Pearl Tag: Prevents mobs from being thrown out of your personal dimension with the Nil Pearl.
