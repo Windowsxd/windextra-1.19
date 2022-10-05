@@ -5,6 +5,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -22,7 +24,7 @@ public class KeyTagItem extends Item {
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-        //entity.world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.CHIME, SoundCategory.NEUTRAL, 1f, 1f / (user.world.getRandom().nextFloat() * 0.4f + 0.8f));
+        entity.world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.NEUTRAL, 1f, 3f / (user.world.getRandom().nextFloat() * 0.4f + 0.8f));
         NbtCompound data = ((IEntityDataSaver)entity).getPersistentData();
         boolean isExempt = data.getBoolean("KeyTPExempt");
         if (!user.world.isClient) {
