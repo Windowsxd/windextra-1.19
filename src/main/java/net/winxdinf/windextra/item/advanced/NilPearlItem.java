@@ -2,6 +2,8 @@ package net.winxdinf.windextra.item.advanced;
 
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.block.BlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
@@ -74,31 +76,41 @@ public class NilPearlItem extends Item {
                 serverWorld.getWorlds().forEach((value) -> {
                     if (value.getRegistryKey().getValue().toString().equals("windextra:personal_dim")) {
                         List<Entity> entities = value.getEntitiesByClass(Entity.class, new Box((NilPearlPosition * 256) - 17, 60, -17, (NilPearlPosition * 256) + 16, 95, 16), target -> !target.equals(entity));
+                        int Shots = PearlData.getInt("PearlMultishot");
                         if (!entities.isEmpty()) {
-                            var Target = entities.get(0);
-                            world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.NEUTRAL, 0.5f, 1f / (entity.world.getRandom().nextFloat() * 0.4f + 0.8f));
-                            PearlData.putInt("NilPearlUsage", 0);
-                            Entity tpedTarget = FabricDimensions.teleport(Target, (ServerWorld) world, new TeleportTarget(entity.getEyePos(), new Vec3d(0, 0, 0), 0f, 0f));
-                            if (ProjectileEntity.class.isAssignableFrom(Target.getClass())) {
-                                ((ProjectileEntity)tpedTarget).setVelocity(entity, entity.getPitch(), entity.getYaw(), 0.0f, 1.5f, 1.0f);
-                            } else {
-                                if (ItemEntity.class.isAssignableFrom(Target.getClass())) {
-                                    ((ItemEntity)Target).setToDefaultPickupDelay();
+                            for (int i = 0; i < entities.size() && Shots != 0; i++) {
+                                var Target = entities.get(i);
+                                boolean isExempt = ((IEntityDataSaver)Target).getPersistentData().getBoolean("PearlTPExempt");
+                                if (isExempt == false) {
+                                    Shots = Shots - 1;
+                                    world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.NEUTRAL, 0.5f, 1f / (entity.world.getRandom().nextFloat() * 0.4f + 0.8f));
+                                    Entity tpedTarget = FabricDimensions.teleport(Target, (ServerWorld) world, new TeleportTarget(entity.getEyePos(), new Vec3d(0, 0, 0), 0f, 0f));
+                                    if (ProjectileEntity.class.isAssignableFrom(Target.getClass())) {
+                                        ((ProjectileEntity)tpedTarget).setVelocity(entity, entity.getPitch(), entity.getYaw(), 0.0f, 1.5f, 1.0f);
+                                    } else {
+                                        if (ItemEntity.class.isAssignableFrom(Target.getClass())) {
+                                            ((ItemEntity)Target).setToDefaultPickupDelay();
+                                        }
+                                        float pitch = entity.getPitch();
+                                        float yaw = entity.getYaw();
+                                        float roll = 0.0f;
+                                        float speed = 1.5f;
+                                        float divergence = .0f;
+                                        float f = -MathHelper.sin(yaw * ((float) Math.PI / 180)) * MathHelper.cos(pitch * ((float) Math.PI / 180));
+                                        float g = -MathHelper.sin((pitch + roll) * ((float) Math.PI / 180));
+                                        float h = MathHelper.cos(yaw * ((float) Math.PI / 180)) * MathHelper.cos(pitch * ((float) Math.PI / 180));
+                                        setVelocity(tpedTarget, f, g, h, speed, divergence);
+                                        Vec3d vec3d = entity.getVelocity();
+                                        tpedTarget.setVelocity(tpedTarget.getVelocity().add(vec3d.x, entity.isOnGround() ? 0.0 : vec3d.y, vec3d.z));
+                                    }
                                 }
-                                float pitch = entity.getPitch();
-                                float yaw = entity.getYaw();
-                                float roll = 0.0f;
-                                float speed = 1.5f;
-                                float divergence = .0f;
-                                float f = -MathHelper.sin(yaw * ((float) Math.PI / 180)) * MathHelper.cos(pitch * ((float) Math.PI / 180));
-                                float g = -MathHelper.sin((pitch + roll) * ((float) Math.PI / 180));
-                                float h = MathHelper.cos(yaw * ((float) Math.PI / 180)) * MathHelper.cos(pitch * ((float) Math.PI / 180));
-                                setVelocity(tpedTarget, f, g, h, speed, divergence);
-                                Vec3d vec3d = entity.getVelocity();
-                                tpedTarget.setVelocity(tpedTarget.getVelocity().add(vec3d.x, entity.isOnGround() ? 0.0 : vec3d.y, vec3d.z));
                             }
-                        } else {
+                            PearlData.putInt("PearlMultishot", Shots);
+                        }
+                        if (Shots > 0) {
                             PearlData.putInt("NilPearlUsage", NilPearlUsage - 1);
+                        } else {
+                            PearlData.putInt("NilPearlUsage", 0);
                         }
                     }
                 });
@@ -110,23 +122,7 @@ public class NilPearlItem extends Item {
     public boolean hasGlint(ItemStack stack) {
         return true;
     }
-/*
-ItemStack itemStack = user.getStackInHand(hand);
-        world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_PEARL_THROW, SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
-        user.getItemCooldownManager().set(this, 20);
-        if (!world.isClient) {
-            EnderPearlEntity enderPearlEntity = new EnderPearlEntity(world, user);
-            enderPearlEntity.setItem(itemStack);
-            enderPearlEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 1.5f, 1.0f);
-            world.spawnEntity(enderPearlEntity);
-        }
-        user.incrementStat(Stats.USED.getOrCreateStat(this));
-        if (!user.getAbilities().creativeMode) {
-            itemStack.decrement(1);
-        }
-        return TypedActionResult.success(itemStack, world.isClient());
-    }
- */
+
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         user.getItemCooldownManager().set(this, 10);
@@ -209,6 +205,9 @@ ItemStack itemStack = user.getStackInHand(hand);
                     IEntityDataSaver NilPearlUser = (IEntityDataSaver) user;
                     NbtCompound PearlData = NilPearlUser.getPersistentData();
                     PearlData.putInt("NilPearlPos", FLineUUIDWasFound);
+                    ItemStack itemStack = user.getStackInHand(hand);
+                    int i = EnchantmentHelper.getLevel(Enchantments.MULTISHOT, itemStack);
+                    PearlData.putInt("PearlMultishot", i == 0 ? 1 : 3);
                     PearlData.putInt("NilPearlUsage", 10);
                 }
             });

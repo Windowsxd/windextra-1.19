@@ -4,9 +4,11 @@ import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
@@ -77,14 +79,22 @@ public class ChargedNilKeyItem extends Item {
                 serverWorld.getWorlds().forEach((value) -> {
                     if (value.getRegistryKey().getValue().toString().equals("windextra:personal_dim")) {
                         List<Entity> entities = value.getEntitiesByClass(Entity.class, new Box((CKeyPosition * 256) - 17, 60, -17, (CKeyPosition * 256) + 16, 95, 16), target -> !target.equals(entity));
+                        int Shots = 1;
                         if (!entities.isEmpty()) {
-                            var Target = entities.get(0);
-                            world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.NEUTRAL, 0.5f, 1f / (entity.world.getRandom().nextFloat() * 0.4f + 0.8f));
-                            CKeyData.putInt("CKeyUsage", 0);
-                            Entity tpedTarget = FabricDimensions.teleport(Target, (ServerWorld) world, new TeleportTarget(new Vec3d(CKeyData.getDouble("CKeyX"), CKeyData.getDouble("CKeyY"), CKeyData.getDouble("CKeyZ")), new Vec3d(0, 0, 0), 0f, 0f));
-
-                        } else {
+                            for (int i = 0; i < entities.size() && Shots != 0; i++) {
+                                var Target = entities.get(i);
+                                boolean isExempt = ((IEntityDataSaver)Target).getPersistentData().getBoolean("KeyTPExempt");
+                                if (isExempt == false) {
+                                    Shots = Shots - 1;
+                                    world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.NEUTRAL, 0.5f, 1f / (entity.world.getRandom().nextFloat() * 0.4f + 0.8f));
+                                    Entity tpedTarget = FabricDimensions.teleport(Target, (ServerWorld) world, new TeleportTarget(new Vec3d(CKeyData.getDouble("CKeyX"), CKeyData.getDouble("CKeyY"), CKeyData.getDouble("CKeyZ")), new Vec3d(0, 0, 0), 0f, 0f));
+                                }
+                            }
+                        }
+                        if (Shots > 0) {
                             CKeyData.putInt("CKeyUsage", CKeyUsage - 1);
+                        } else {
+                            CKeyData.putInt("CKeyUsage", 0);
                         }
                     }
                 });
