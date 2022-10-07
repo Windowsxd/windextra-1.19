@@ -1,31 +1,25 @@
 package net.winxdinf.windextra.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.enums.WallMountLocation;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.event.GameEvent;
+import net.winxdinf.windextra.block.entity.CKeyDetectorBlockEntity;
+import net.winxdinf.windextra.block.entity.PearlDetectorBlockEntity;
+import org.jetbrains.annotations.Nullable;
 
-public class TeleportDetectorBlock extends Block {
+public class CKeyDetectorBlock extends BlockWithEntity {
     public static final BooleanProperty POWERED = Properties.POWERED;
-    public TeleportDetectorBlock(Settings settings) {
+    public CKeyDetectorBlock(Settings settings) {
         super(settings);
         this.setDefaultState((BlockState)this.stateManager.getDefaultState().with(POWERED, false));
     }
@@ -50,7 +44,10 @@ public class TeleportDetectorBlock extends Block {
             TeleportDetectorBlock.spawnParticles(state, world, pos, 0.5f);
         }
     }*/
-
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+     return BlockRenderType.MODEL;
+    }
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (moved || state.isOf(newState.getBlock())) {
@@ -90,5 +87,11 @@ public class TeleportDetectorBlock extends Block {
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(POWERED);
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new CKeyDetectorBlockEntity(pos, state);
     }
 }

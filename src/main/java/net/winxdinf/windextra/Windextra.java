@@ -2,6 +2,7 @@ package net.winxdinf.windextra;
 
 import net.fabricmc.api.ModInitializer;
 import net.winxdinf.windextra.block.ModBlocks;
+import net.winxdinf.windextra.block.entity.ModBlockEntity;
 import net.winxdinf.windextra.item.ModItems;
 import net.winxdinf.windextra.world.biome.ModBiomes;
 import net.winxdinf.windextra.world.dimension.ModDimensions;
@@ -22,6 +23,7 @@ public class Windextra implements ModInitializer {
 		// Proceed with mild caution.
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
+		ModBlockEntity.registerBlockEntities();
 		ModDimensions.register();
 		ModBiomes.initBiomes();
 		ModBiomes.registerBiomes();
