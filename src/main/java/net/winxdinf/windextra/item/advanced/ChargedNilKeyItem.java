@@ -1,25 +1,16 @@
 package net.winxdinf.windextra.item.advanced;
 
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -34,7 +25,8 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.winxdinf.windextra.block.TeleportDetectorBlock;
+import net.winxdinf.windextra.block.CKeyDetectorBlock;
+import net.winxdinf.windextra.util.BoxGenner;
 import net.winxdinf.windextra.util.IEntityDataSaver;
 import net.winxdinf.windextra.util.NilKeyData;
 
@@ -163,17 +155,7 @@ public class ChargedNilKeyItem extends Item {
                 serverWorld.getWorlds().forEach((value) -> {
                     if (value.getRegistryKey().getValue().toString().equals("windextra:personal_dim")) {
                         if (isNewToNilKey) {
-                            for (int blockY = 0; blockY <= 33; blockY++) {
-                                for (int blockZ = -17; blockZ <= 16; blockZ++) {
-                                    for (int blockX = -17; blockX <= 16; blockX++) {
-                                        if (blockY == 0 || blockY == 33) {
-                                            value.setBlockState(new BlockPos((FLineUUIDWasFound * 256) + blockX, 60 + blockY, blockZ), NIL_BLOCK.getDefaultState());
-                                        } else if (blockX == -17 || blockZ == -17 || blockX == 16 || blockZ == 16) {
-                                            value.setBlockState(new BlockPos((FLineUUIDWasFound * 256) + blockX, 60 + blockY, blockZ), NIL_BLOCK.getDefaultState());
-                                        }
-                                    }
-                                }
-                            }
+                            new BoxGenner().generateBox(FLineUUIDWasFound, value);
                         }
                         FabricDimensions.teleport(entity, value, new TeleportTarget(new Vec3d(Nx, Ny, Nz), new Vec3d(0, 0, 0), 0f, 0f));
 
@@ -189,10 +171,6 @@ public class ChargedNilKeyItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         user.getItemCooldownManager().set(this, 60);
         BlockHitResult hitResult = ChargedNilKeyItem.raycast(world, user, RaycastContext.FluidHandling.ANY);
-        if (user.isSneaking() && hitResult.getType() == HitResult.Type.BLOCK) {
-            world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.NEUTRAL, 1f, 1f / (user.world.getRandom().nextFloat() * 0.4f + 0.8f));
-
-        }
         if (!world.isClient()) {
             world.getProfiler().push("nil_key_use");
             IEntityDataSaver nilKeyUser = (IEntityDataSaver) user;
@@ -273,17 +251,7 @@ public class ChargedNilKeyItem extends Item {
             serverWorld.getWorlds().forEach((value) -> {
                 if (isNewToNilKey) {
                     if (value.getRegistryKey().getValue().toString().equals("windextra:personal_dim")) {
-                        for (int blockY = 0; blockY <= 33; blockY++) {
-                            for (int blockZ = -17; blockZ <= 16; blockZ++) {
-                                for (int blockX = -17; blockX <= 16; blockX++) {
-                                    if (blockY == 0 || blockY == 33) {
-                                        value.setBlockState(new BlockPos((FLineUUIDWasFound*256) + blockX, 60 + blockY, blockZ), NIL_BLOCK.getDefaultState());
-                                    } else if (blockX == -17 || blockZ == -17 || blockX == 16 || blockZ == 16) {
-                                        value.setBlockState(new BlockPos((FLineUUIDWasFound*256) + blockX, 60 + blockY, blockZ), NIL_BLOCK.getDefaultState());
-                                    }
-                                }
-                            }
-                        }
+                        new BoxGenner().generateBox(FLineUUIDWasFound, value);
                     }
                 }
 
@@ -307,7 +275,7 @@ public class ChargedNilKeyItem extends Item {
                                 for (int blockX = -17; blockX <= 16; blockX++) {
                                     BlockPos blockPos = new BlockPos((FLineUUIDWasFound*256) + blockX, 60 + blockY, blockZ);
                                     if (value.getBlockState(blockPos) == CHARGED_KEY_DETECTOR.getDefaultState()) {
-                                        value.setBlockState(new BlockPos((FLineUUIDWasFound*256) + blockX, 60 + blockY, blockZ), CHARGED_KEY_DETECTOR.getDefaultState().with(TeleportDetectorBlock.POWERED, true));
+                                        value.setBlockState(new BlockPos((FLineUUIDWasFound*256) + blockX, 60 + blockY, blockZ), CHARGED_KEY_DETECTOR.getDefaultState().with(CKeyDetectorBlock.POWERED, true));
                                         value.playSound(null, blockPos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3f, 0.6f);
                                         value.createAndScheduleBlockTick(blockPos, value.getBlockState(blockPos).getBlock(), 8);
                                     }

@@ -21,6 +21,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.winxdinf.windextra.util.BoxGenner;
 import net.winxdinf.windextra.util.IEntityDataSaver;
 import net.winxdinf.windextra.util.NilKeyData;
 import org.apache.commons.compress.compressors.lz77support.LZ77Compressor;
@@ -116,17 +117,7 @@ public class NilKeyItem extends Item {
             serverWorld.getWorlds().forEach((value) -> {
                 if (isNewToNilKey) {
                     if (value.getRegistryKey().getValue().toString().equals("windextra:personal_dim")) {
-                        for (int blockY = 0; blockY <= 33; blockY++) {
-                            for (int blockZ = -17; blockZ <= 16; blockZ++) {
-                                for (int blockX = -17; blockX <= 16; blockX++) {
-                                    if (blockY == 0 || blockY == 33) {
-                                        value.setBlockState(new BlockPos((FLineUUIDWasFound*256) + blockX, 60 + blockY, blockZ), NIL_BLOCK.getDefaultState());
-                                    } else if (blockX == -17 || blockZ == -17 || blockX == 16 || blockZ == 16) {
-                                        value.setBlockState(new BlockPos((FLineUUIDWasFound*256) + blockX, 60 + blockY, blockZ), NIL_BLOCK.getDefaultState());
-                                    }
-                                }
-                            }
-                        }
+                        new BoxGenner().generateBox(FLineUUIDWasFound, value);
                     }
                 }
                 if (value.getRegistryKey().getValue().toString().equals("windextra:personal_dim")) {
