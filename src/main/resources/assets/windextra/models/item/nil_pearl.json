@@ -1,6 +1,14 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "windextra:item/nil_pearl"
-  }
+    "layer0": "windextra:item/nil_pearl_dormant"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "minecraft:activated": 1
+      },
+      "model": "windextra:item/nil_pearl_activated_0"
+    }
+  ]
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "windextra:item/nil_pearl",
+  "textures": {
+    "layer0": "windextra:item/nil_pearl_activated"
+  }
+}
