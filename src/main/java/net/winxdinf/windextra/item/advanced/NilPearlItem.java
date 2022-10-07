@@ -1,33 +1,23 @@
 package net.winxdinf.windextra.item.advanced;
 
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
-import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.entity.projectile.SmallFireballEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.WorldSavePath;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -36,12 +26,10 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.winxdinf.windextra.block.TeleportDetectorBlock;
+import net.winxdinf.windextra.block.CKeyDetectorBlock;
 import net.winxdinf.windextra.util.IEntityDataSaver;
-import net.winxdinf.windextra.util.NilKeyData;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
@@ -66,6 +54,14 @@ public class NilPearlItem extends Item {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        NbtCompound stackData = stack.getNbt();
+        if (stackData != null) {
+            int london = stackData.getInt("windextra.activated");
+            if (london != 0) {
+                stackData.putInt("windextra.activated", london-1);
+            }
+        }
+        stack.setNbt(stackData);
         if (!world.isClient()) {
             IEntityDataSaver NilPearlUser = (IEntityDataSaver) entity;
             NbtCompound PearlData = NilPearlUser.getPersistentData();
@@ -120,7 +116,13 @@ public class NilPearlItem extends Item {
 
     @Override
     public boolean hasGlint(ItemStack stack) {
-        return true;
+        NbtCompound stackData = stack.getNbt();
+        if (stackData != null) {
+            if (stackData.getInt("windextra.activated") != 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -194,7 +196,7 @@ public class NilPearlItem extends Item {
                             for (int blockX = -17; blockX <= 16; blockX++) {
                                 BlockPos blockPos = new BlockPos((FLineUUIDWasFound*256) + blockX, 60 + blockY, blockZ);
                                 if (value.getBlockState(blockPos) == PEARL_DETECTOR.getDefaultState()) {
-                                    value.setBlockState(new BlockPos((FLineUUIDWasFound*256) + blockX, 60 + blockY, blockZ), PEARL_DETECTOR.getDefaultState().with(TeleportDetectorBlock.POWERED, true));
+                                    value.setBlockState(new BlockPos((FLineUUIDWasFound*256) + blockX, 60 + blockY, blockZ), PEARL_DETECTOR.getDefaultState().with(CKeyDetectorBlock.POWERED, true));
                                     value.playSound(null, blockPos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3f, 0.6f);
                                     value.createAndScheduleBlockTick(blockPos, value.getBlockState(blockPos).getBlock(), 8);
                                 }
@@ -206,6 +208,13 @@ public class NilPearlItem extends Item {
                     NbtCompound PearlData = NilPearlUser.getPersistentData();
                     PearlData.putInt("NilPearlPos", FLineUUIDWasFound);
                     ItemStack itemStack = user.getStackInHand(hand);
+
+                    NbtCompound pearlNBT = itemStack.getNbt();
+                    if (pearlNBT == null) {
+                        pearlNBT = new NbtCompound();
+                    }
+                    pearlNBT.putInt("windextra.activated", 15);
+                    itemStack.setNbt(pearlNBT);
                     int i = EnchantmentHelper.getLevel(Enchantments.MULTISHOT, itemStack);
                     PearlData.putInt("PearlMultishot", i == 0 ? 1 : 3);
                     PearlData.putInt("NilPearlUsage", 10);
