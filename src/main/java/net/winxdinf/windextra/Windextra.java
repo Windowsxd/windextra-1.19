@@ -1,8 +1,13 @@
 package net.winxdinf.windextra;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.winxdinf.windextra.block.ModBlocks;
 import net.winxdinf.windextra.block.entity.ModBlockEntity;
+import net.winxdinf.windextra.entity.ModEntities;
 import net.winxdinf.windextra.item.ModItems;
 import net.winxdinf.windextra.world.biome.ModBiomes;
 import net.winxdinf.windextra.world.dimension.ModDimensions;
@@ -27,6 +32,9 @@ public class Windextra implements ModInitializer {
 		ModDimensions.register();
 		ModBiomes.initBiomes();
 		ModBiomes.registerBiomes();
+
+		ModEntities.registerEntities();
+
 		LOGGER.info("Windextras initialized");
 	}
 }

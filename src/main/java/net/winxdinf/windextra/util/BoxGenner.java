@@ -13,7 +13,6 @@ public class BoxGenner {
     public BlockState randomNilBlockState(BlockPos pos) {
         double randomNumber = Math.random();
         double posind = Math.max(1.5d * ((33d-pos.getY())/33d) - 0.5d, 0d);
-        Windextra.LOGGER.info("random number: "+randomNumber+"/posnumber: "+posind);
         if (pos.getY() == 0) {
             return NIL_SCAFFOLD.getDefaultState();
         } else if (pos.getY() == 33) {
