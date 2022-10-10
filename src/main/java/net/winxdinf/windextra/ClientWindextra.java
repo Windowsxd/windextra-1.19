@@ -50,7 +50,7 @@ public class ClientWindextra implements ClientModInitializer {
 		BlockEntityRendererRegistry.register(ModBlockEntity.NILPROJECTORENTITY, NilProjectorBlockEntityRenderer::new);
 
 
-		EntityRendererRegistry.register(ModEntities.TEST_PROJECTILE, (dispatcher) -> new ProjectileRenderer(dispatcher));
+		EntityRendererRegistry.register(ModEntities.NIL_PROJECTILE, (dispatcher) -> new ProjectileRenderer(dispatcher));
 
 		ModModelPredicateProvider.registerModModels();
 

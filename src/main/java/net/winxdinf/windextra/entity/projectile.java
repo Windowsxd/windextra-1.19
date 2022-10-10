@@ -48,7 +48,7 @@ public class projectile extends ThrownEntity {
     }
     @Environment(EnvType.CLIENT)
     public projectile(World world, double x, double y, double z, int id, UUID uuid) {
-        super(ModEntities.TEST_PROJECTILE, world);
+        super(ModEntities.NIL_PROJECTILE, world);
         updatePosition(x, y, z);
         updateTrackedPosition(x,y,z);
         setId(id);
