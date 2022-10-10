@@ -4,7 +4,7 @@
   "item.windextra.nil_pearl": "Nil Pearl",
   "item.windextra.ckey_tag": "Charged Nil Key Tag",
   "item.windextra.pearl_tag": "Nil Pearl Tag",
-  "item.windextra.everything": "Everything",
+  "item.windextra.the_nil": "The Nil",
 
   "block.windextra.nil_block": "Nil Block",
   "block.windextra.nil_scaffold": "Nil Scaffold",
@@ -14,5 +14,9 @@
 
   "itemGroup.windextra.windextras": "Windextra",
 
-  "entity.windextra.nil_projectile": "Nil Projectile"
+  "entity.windextra.nil_projectile": "Nil Projectile",
+
+  "key.category.windextra.keybinds": "Windextra Keys",
+  "key.category.nil_previous": "Previous Nil Item",
+  "key.category.nil_next": "Next Nil Item"
 }

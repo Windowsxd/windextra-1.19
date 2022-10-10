@@ -19,6 +19,7 @@ import net.winxdinf.windextra.block.entity.ModBlockEntity;
 import net.winxdinf.windextra.entity.ModEntities;
 import net.winxdinf.windextra.entity.client.ProjectileRenderer;
 import net.winxdinf.windextra.entity.projectile;
+import net.winxdinf.windextra.event.KeyInputHandler;
 import net.winxdinf.windextra.util.ModModelPredicateProvider;
 import net.winxdinf.windextra.util.networking;
 import org.slf4j.Logger;
@@ -49,6 +50,7 @@ public class ClientWindextra implements ClientModInitializer {
 		BlockEntityRendererRegistry.register(ModBlockEntity.CKEYDETECTORENTITY, CKeyDetectorBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.register(ModBlockEntity.NILPROJECTORENTITY, NilProjectorBlockEntityRenderer::new);
 
+		KeyInputHandler.register();
 
 		EntityRendererRegistry.register(ModEntities.NIL_PROJECTILE, (dispatcher) -> new ProjectileRenderer(dispatcher));
 

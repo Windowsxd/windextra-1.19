@@ -1,0 +1,41 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "windextra:item/charged_nil_key"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "minecraft:state": 0.2
+      },
+      "model": "windextra:item/charged_nil_key"
+    },
+    {
+      "predicate": {
+        "minecraft:state": 0.4,
+        "minecraft:activated": 0
+      },
+      "model": "windextra:item/nil_pearl"
+    },
+    {
+      "predicate": {
+        "minecraft:state": 0.4,
+        "minecraft:activated": 1
+      },
+      "model": "windextra:item/nil_pearl_activated_0"
+    },
+
+    {
+      "predicate": {
+        "minecraft:state": 0.6
+      },
+      "model": "windextra:item/pearl_tag"
+    },
+    {
+      "predicate": {
+        "minecraft:state": 0.8
+      },
+      "model": "windextra:item/ckey_tag"
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import net.winxdinf.windextra.block.ModBlocks;
 import net.winxdinf.windextra.block.entity.ModBlockEntity;
 import net.winxdinf.windextra.entity.ModEntities;
 import net.winxdinf.windextra.item.ModItems;
+import net.winxdinf.windextra.util.networkingServer;
 import net.winxdinf.windextra.world.biome.ModBiomes;
 import net.winxdinf.windextra.world.dimension.ModDimensions;
 import org.slf4j.Logger;
@@ -26,6 +27,7 @@ public class Windextra implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
+		networkingServer.init();
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
 		ModBlockEntity.registerBlockEntities();

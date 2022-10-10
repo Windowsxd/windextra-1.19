@@ -3,6 +3,7 @@ package net.winxdinf.windextra.util;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.FireworksSparkParticle;
@@ -57,7 +58,5 @@ public class networking {
                 }
             });
         });
-
-
     }
 }

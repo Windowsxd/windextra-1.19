@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " K ",
+    "R P",
+    " T "
+  ],
+  "key": {
+    "P": {
+      "item": "windextra:nil_pearl"
+    },
+    "K": {
+      "item": "windextra:charged_nil_key"
+    },
+    "T": {
+      "item": "windextra:ckey_tag"
+    },
+    "R": {
+      "item": "windextra:pearl_tag"
+    }
+  },
+  "result": {
+    "item": "windextra:the_nil"
+  }
+}

@@ -24,8 +24,8 @@ public class ModItems {
             new KeyTagItem(new FabricItemSettings().group(ModItemGroup.Windextras).maxCount(1).fireproof()));
 
 
-    public static final Item EVERYTHING = registerItem("everything",
-            new Item(new FabricItemSettings().group(ModItemGroup.Windextras).fireproof()));
+    public static final Item THE_NIL = registerItem("the_nil",
+            new TheNilItem(new FabricItemSettings().group(ModItemGroup.Windextras).maxCount(1).fireproof()));
 
 
     public static void registerModItems() {
