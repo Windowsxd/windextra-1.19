@@ -26,7 +26,9 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.winxdinf.windextra.Windextra;
 import net.winxdinf.windextra.block.CKeyDetectorBlock;
+import net.winxdinf.windextra.entity.projectile;
 import net.winxdinf.windextra.util.IEntityDataSaver;
 
 import java.io.File;
@@ -81,8 +83,12 @@ public class NilPearlItem extends Item {
                                     Shots = Shots - 1;
                                     world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.NEUTRAL, 0.5f, 1f / (entity.world.getRandom().nextFloat() * 0.4f + 0.8f));
                                     Entity tpedTarget = FabricDimensions.teleport(Target, (ServerWorld) world, new TeleportTarget(entity.getEyePos(), new Vec3d(0, 0, 0), 0f, 0f));
+                                    tpedTarget.setYaw(entity.getYaw());
+                                    tpedTarget.setPitch(entity.getPitch());
                                     if (ProjectileEntity.class.isAssignableFrom(Target.getClass())) {
-                                        ((ProjectileEntity)tpedTarget).setVelocity(entity, entity.getPitch(), entity.getYaw(), 0.0f, 1.5f, 1.0f);
+                                        Windextra.LOGGER.info("got a projectile");
+                                        ((ProjectileEntity) tpedTarget).setOwner(entity);
+                                        ((ProjectileEntity) tpedTarget).setVelocity(entity, entity.getPitch(), entity.getYaw(), 0.0f, 1.5f, 1.0f);
                                     } else {
                                         if (ItemEntity.class.isAssignableFrom(Target.getClass())) {
                                             ((ItemEntity)Target).setToDefaultPickupDelay();

@@ -11,6 +11,8 @@ public class ModBlockEntity {
     public static BlockEntityType<PearlDetectorBlockEntity> PEARLDETECTORENTITY;
     public static BlockEntityType<CKeyDetectorBlockEntity> CKEYDETECTORENTITY;
 
+    public static BlockEntityType<NilProjectorBlockEntity> NILPROJECTORENTITY;
+
 
     public static void registerBlockEntities() {
         PEARLDETECTORENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE,
@@ -21,6 +23,11 @@ public class ModBlockEntity {
                 new Identifier(Windextra.MODID, "ckey_detector"),
                 FabricBlockEntityTypeBuilder.create(CKeyDetectorBlockEntity::new,
                         ModBlocks.CHARGED_KEY_DETECTOR).build(null));
+        NILPROJECTORENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE,
+                new Identifier(Windextra.MODID, "nil_projector"),
+                FabricBlockEntityTypeBuilder.create(NilProjectorBlockEntity::new,
+                        ModBlocks.NIL_PROJECTOR).build(null));
+
 
     }
 }

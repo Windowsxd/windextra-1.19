@@ -35,6 +35,10 @@ public class ModBlocks {
     public static final Block CHARGED_KEY_DETECTOR = registerBlock("ckey_detector",
             new CKeyDetectorBlock(FabricBlockSettings.copy(Blocks.GLASS).requiresTool().nonOpaque().strength(5.0f, 6.0f).sounds(BlockSoundGroup.METAL)), ModItemGroup.Windextras);
 
+    public static final Block NIL_PROJECTOR = registerBlock("nil_projector",
+            new NilProjectorBlock(FabricBlockSettings.copy(Blocks.GLASS).requiresTool().nonOpaque().strength(5.0f, 6.0f).sounds(BlockSoundGroup.METAL)), ModItemGroup.Windextras);
+
+
     public static void registerModBlocks() {
         //Windextra.LOGGER.info("registering items...");
 

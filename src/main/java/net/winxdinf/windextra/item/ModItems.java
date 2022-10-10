@@ -23,6 +23,11 @@ public class ModItems {
     public static final Item CKEY_TAGGER = registerItem("ckey_tag",
             new KeyTagItem(new FabricItemSettings().group(ModItemGroup.Windextras).maxCount(1).fireproof()));
 
+
+    public static final Item EVERYTHING = registerItem("everything",
+            new Item(new FabricItemSettings().group(ModItemGroup.Windextras).fireproof()));
+
+
     public static void registerModItems() {
     //Windextra.LOGGER.info("registering items...");
     }
