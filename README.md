@@ -15,6 +15,8 @@ Charged Nil Key Tag: Prevents mobs from being pulled out of your personal dimens
 
 Nil Pearl Tag: Prevents mobs from being thrown out of your personal dimension with the Nil Pearl.
 
+The Nil: this is the Charged Nil Key, Nil Pearl, Pearl Tag, and Charged Nil Key Tag in one item. You can cycle through the item with the default keys Z and X.
+
 ## Blocks
 
 Pearl Detector: Works only in your personal dimension. It emits a redstone pulse when you use a Nil Pearl.
