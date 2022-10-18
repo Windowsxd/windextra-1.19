@@ -9,6 +9,7 @@ import net.winxdinf.windextra.block.ModBlocks;
 import net.winxdinf.windextra.block.entity.ModBlockEntity;
 import net.winxdinf.windextra.entity.ModEntities;
 import net.winxdinf.windextra.item.ModItems;
+import net.winxdinf.windextra.particle.ModParticles;
 import net.winxdinf.windextra.util.networkingServer;
 import net.winxdinf.windextra.world.biome.ModBiomes;
 import net.winxdinf.windextra.world.dimension.ModDimensions;
@@ -36,6 +37,8 @@ public class Windextra implements ModInitializer {
 		ModBiomes.registerBiomes();
 
 		ModEntities.registerEntities();
+
+		ModParticles.registerParticles();
 
 		LOGGER.info("Windextras initialized");
 	}

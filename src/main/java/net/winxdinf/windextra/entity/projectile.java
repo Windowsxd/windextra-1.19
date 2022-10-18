@@ -34,14 +34,16 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 import net.winxdinf.windextra.Windextra;
+import net.winxdinf.windextra.particle.ModParticles;
 
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class projectile extends ThrownEntity {
     public static final Identifier SPAWN_PACKET = new Identifier(Windextra.MODID, "projector");
     public static final Identifier EXPLODE_PACKET = new Identifier(Windextra.MODID, "projectsplode");
-
 
     public projectile(EntityType<? extends ThrownEntity> entityType, World world) {
         super(entityType, world);
@@ -88,10 +90,10 @@ public class projectile extends ThrownEntity {
         } else if (this.world.isClient == false && this.age < 60) {
             this.setNoGravity(true);
         }
-        super.tick();
-        if (this.world.isClient && this.age % 2 < 2) {
-            this.world.addParticle(ParticleTypes.FIREWORK, this.getX(), this.getY()+0.125, this.getZ(), this.random.nextGaussian() * 0.05, -this.getVelocity().y * 0.5, this.random.nextGaussian() * 0.05);
+        if (this.world.isClient()) {
+            this.world.addParticle(ModParticles.PROJECTILE_PARTICLE, this.getX(), this.getY()+0.125, this.getZ(), 0, 0, 0);
         }
+        super.tick();
     }
 
     @Override

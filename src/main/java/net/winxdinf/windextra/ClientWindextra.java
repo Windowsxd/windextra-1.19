@@ -5,6 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.MinecraftClient;
@@ -20,6 +21,8 @@ import net.winxdinf.windextra.entity.ModEntities;
 import net.winxdinf.windextra.entity.client.ProjectileRenderer;
 import net.winxdinf.windextra.entity.projectile;
 import net.winxdinf.windextra.event.KeyInputHandler;
+import net.winxdinf.windextra.particle.ModParticles;
+import net.winxdinf.windextra.particle.ProjectileParticle;
 import net.winxdinf.windextra.util.ModModelPredicateProvider;
 import net.winxdinf.windextra.util.networking;
 import org.slf4j.Logger;
@@ -56,7 +59,7 @@ public class ClientWindextra implements ClientModInitializer {
 
 		ModModelPredicateProvider.registerModModels();
 
-
+		ParticleFactoryRegistry.getInstance().register(ModParticles.PROJECTILE_PARTICLE, ProjectileParticle.Factory::new);
 
 
 		LOGGER.info("Windextras client initialized");

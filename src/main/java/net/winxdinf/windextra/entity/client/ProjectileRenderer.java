@@ -18,6 +18,9 @@ import net.winxdinf.windextra.Windextra;
 import net.winxdinf.windextra.block.ModBlocks;
 import net.winxdinf.windextra.entity.projectile;
 import net.winxdinf.windextra.item.ModItems;
+import net.winxdinf.windextra.particle.ModParticles;
+
+import java.util.Random;
 
 public class ProjectileRenderer extends EntityRenderer<projectile> {
     public static final ItemStack stack = new ItemStack(ModBlocks.NIL_BLOCK);
@@ -36,15 +39,17 @@ public class ProjectileRenderer extends EntityRenderer<projectile> {
 
     @Override
     public void render(projectile entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+        double time = (entity.getWorld().getTime() + tickDelta);
         matrices.push();
-
         matrices.translate(0,0.125,0);
-        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(entity.getYaw()));
-        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(entity.getPitch()-90f));
+        matrices.multiply(Vec3f.POSITIVE_X.getRadialQuaternion(new Random().nextFloat()*(float)Math.PI));
+        matrices.multiply(Vec3f.POSITIVE_Y.getRadialQuaternion(new Random().nextFloat()*(float)Math.PI));
+        matrices.multiply(Vec3f.POSITIVE_Z.getRadialQuaternion(new Random().nextFloat()*(float)Math.PI));
         matrices.scale(0.5f,0.5f,0.5f);
 
         MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, 1);
         matrices.pop();
+
     }
     @Override
     public Identifier getTexture(projectile entity) {
