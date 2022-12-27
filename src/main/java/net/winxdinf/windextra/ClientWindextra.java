@@ -7,10 +7,12 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.data.client.Model;
 import net.winxdinf.windextra.block.ModBlocks;
 import net.winxdinf.windextra.block.client.CKeyDetectorBlockEntityRenderer;
@@ -21,6 +23,8 @@ import net.winxdinf.windextra.entity.ModEntities;
 import net.winxdinf.windextra.entity.client.ProjectileRenderer;
 import net.winxdinf.windextra.entity.projectile;
 import net.winxdinf.windextra.event.KeyInputHandler;
+import net.winxdinf.windextra.item.ModItems;
+import net.winxdinf.windextra.item.advanced.TheNilItem;
 import net.winxdinf.windextra.particle.ModParticles;
 import net.winxdinf.windextra.particle.ProjectileParticle;
 import net.winxdinf.windextra.util.ModModelPredicateProvider;
@@ -43,6 +47,7 @@ public class ClientWindextra implements ClientModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
+		//BuiltinItemRendererRegistry.DynamicItemRenderer theNilRenderer = new TheNilItemRenderer();
 		networking.init();
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.PEARL_DETECTOR, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.CHARGED_KEY_DETECTOR, RenderLayer.getCutout());
@@ -52,6 +57,9 @@ public class ClientWindextra implements ClientModInitializer {
 		BlockEntityRendererRegistry.register(ModBlockEntity.PEARLDETECTORENTITY, PearlDetectorBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.register(ModBlockEntity.CKEYDETECTORENTITY, CKeyDetectorBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.register(ModBlockEntity.NILPROJECTORENTITY, NilProjectorBlockEntityRenderer::new);
+
+
+		//BuiltinItemRendererRegistry.INSTANCE.register(ModItems.THE_NIL, theNilRenderer);
 
 		KeyInputHandler.register();
 

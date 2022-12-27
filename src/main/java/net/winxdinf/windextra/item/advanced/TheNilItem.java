@@ -1,6 +1,10 @@
 package net.winxdinf.windextra.item.advanced;
 
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
+import net.minecraft.client.Mouse;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,10 +16,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.WorldSavePath;
+import net.minecraft.stat.Stat;
+import net.minecraft.text.Text;
+import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -31,6 +34,7 @@ import net.winxdinf.windextra.item.ModItems;
 import net.winxdinf.windextra.util.BoxGenner;
 import net.winxdinf.windextra.util.IEntityDataSaver;
 import net.winxdinf.windextra.util.NilKeyData;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -39,8 +43,11 @@ import java.util.List;
 import java.util.Scanner;
 
 import static net.winxdinf.windextra.block.ModBlocks.CHARGED_KEY_DETECTOR;
+import static net.winxdinf.windextra.item.ModItems.*;
+import static net.winxdinf.windextra.item.ModItems.CKEY_TAGGER;
 
 public class TheNilItem extends Item {
+    Item[] theNilStates = {CHARGED_NIL_KEY, NIL_PEARL, PEARL_TAGGER, CKEY_TAGGER};
     public TheNilItem(Settings settings) {
         super(settings);
     }
@@ -58,6 +65,7 @@ public class TheNilItem extends Item {
     public boolean hasGlint(ItemStack stack) {
         int state = getState(stack);
         NbtCompound stackData = stack.getNbt();
+
         if (state == 1) {
             return true;
         } else if (state == 2) {
@@ -76,40 +84,40 @@ public class TheNilItem extends Item {
     }
 
     @Override
+    public boolean isFireproof() {
+        return true;
+    }
+
+    @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         int state = getState(stack);
-        if (state == 1) {
-            ModItems.CHARGED_NIL_KEY.inventoryTick(stack, world, entity, slot, selected);
-        } else if (state == 2) {
-            ModItems.NIL_PEARL.inventoryTick(stack, world, entity, slot, selected);
-        } else if (state == 3) {
-            ModItems.PEARL_TAGGER.inventoryTick(stack, world, entity, slot, selected);
-        } else if (state == 4) {
-            ModItems.CKEY_TAGGER.inventoryTick(stack, world, entity, slot, selected);
+        Item StateItem = theNilStates[state-1];
+        StateItem.inventoryTick(stack, world, entity, slot, selected);
+        if (world.isClient()) {
+            PlayerEntity player = (PlayerEntity)entity;
+            if (player.getItemCooldownManager().isCoolingDown(StateItem)) {
+                player.getItemCooldownManager().set(this, 3000);
+            } else {
+                player.getItemCooldownManager().remove(this);
+            }
         }
+
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        tooltip.add(theNilStates[getState(stack)-1].getName().copy().formatted(Formatting.LIGHT_PURPLE));
+        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
         int state = getState(stack);
-
-        if (state == 1) {
-            if (!user.getItemCooldownManager().isCoolingDown(ModItems.CHARGED_NIL_KEY)) {
-                return ModItems.CHARGED_NIL_KEY.useOnEntity(stack, user, entity, hand);
-            }
-        } else if (state == 2) {
-            if (!user.getItemCooldownManager().isCoolingDown(ModItems.NIL_PEARL)) {
-                return ModItems.NIL_PEARL.useOnEntity(stack, user, entity, hand);
-            }
-        } else if (state == 3) {
-            if (!user.getItemCooldownManager().isCoolingDown(ModItems.PEARL_TAGGER)) {
-                return ModItems.PEARL_TAGGER.useOnEntity(stack, user, entity, hand);
-            }
-        } else if (state == 4) {
-            if (!user.getItemCooldownManager().isCoolingDown(ModItems.CKEY_TAGGER)) {
-                return ModItems.CKEY_TAGGER.useOnEntity(stack, user, entity, hand);
-            }
+        Item StateItem = theNilStates[state-1];
+        if (!user.getItemCooldownManager().isCoolingDown(StateItem)) {
+            return StateItem.useOnEntity(stack, user, entity, hand);
         }
+
         return ActionResult.success(user.world.isClient);
     }
 
@@ -124,23 +132,9 @@ public class TheNilItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
         int state = getState(stack);
-
-        if (state == 1) {
-            if (!user.getItemCooldownManager().isCoolingDown(ModItems.CHARGED_NIL_KEY)) {
-                return ModItems.CHARGED_NIL_KEY.use(world, user, hand);
-            }
-        } else if (state == 2) {
-            if (!user.getItemCooldownManager().isCoolingDown(ModItems.NIL_PEARL)) {
-                return ModItems.NIL_PEARL.use(world, user, hand);
-            }
-        } else if (state == 3) {
-            if (!user.getItemCooldownManager().isCoolingDown(ModItems.PEARL_TAGGER)) {
-                return ModItems.PEARL_TAGGER.use(world, user, hand);
-            }
-        } else if (state == 4) {
-            if (!user.getItemCooldownManager().isCoolingDown(ModItems.CKEY_TAGGER)) {
-                return ModItems.CKEY_TAGGER.use(world, user, hand);
-            }
+        Item StateItem = theNilStates[state-1];
+        if (!user.getItemCooldownManager().isCoolingDown(StateItem)) {
+            return StateItem.use(world, user, hand);
         }
 
         return TypedActionResult.pass(stack);
