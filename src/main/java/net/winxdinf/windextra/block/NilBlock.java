@@ -19,11 +19,17 @@ import net.minecraft.world.World;
 import net.winxdinf.windextra.block.entity.CKeyDetectorBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class NilBlock extends Block {
-
+public class NilBlock extends BlockWithEntity {
+    public static final BooleanProperty POWERED = Properties.POWERED;
     public NilBlock(Settings settings) {
         super(settings);
+        this.setDefaultState((BlockState)this.stateManager.getDefaultState().with(POWERED, false));
     }
 
 
+    @Nullable
+    @Override
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return null;
+    }
 }
